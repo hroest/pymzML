@@ -138,7 +138,8 @@ class oboTranslator(object):
 
         # Modify the root for cx_freeze
         if getattr(sys, 'frozen', False):
-            obo_root = os.path.dirname(sys._MEIPASS)
+            # obo_root = os.path.dirname(sys._MEIPASS)
+            obo_root = os.path.dirname(__file__)
         else:
             obo_root = os.path.dirname(__file__)
 
