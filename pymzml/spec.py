@@ -1511,7 +1511,6 @@ class Spectrum(dict):
 
                     elif precursorElement.tag.endswith('isolationWindow'):
 
-                        print ("get isolation window!")
                         for subElement in precursorElement.getiterator():
                             if subElement.tag.endswith('cvParam'):
                                 accession = subElement.get('accession')
