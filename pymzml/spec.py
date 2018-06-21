@@ -829,13 +829,25 @@ class Spectrum(dict):
         coder = pyopenms.MSNumpressCoder()
         np_config = pyopenms.NumpressConfig()
         np_config.estimate_fixed_point = True
+        zlib_compression = False
         if compression == 'ms-np-linear':
             np_config.np_compression = pyopenms.MSNumpressCoder.NumpressCompression.LINEAR
         elif compression == 'ms-np-pic':
             np_config.np_compression = pyopenms.MSNumpressCoder.NumpressCompression.PIC
         elif compression == 'ms-np-slof':
             np_config.np_compression = pyopenms.MSNumpressCoder.NumpressCompression.SLOF
-        coder.decodeNP(inData, result, False, np_config)
+        elif compression == 'zlib-ms-np-linear':
+            np_config.np_compression = pyopenms.MSNumpressCoder.NumpressCompression.LINEAR
+            zlib_compression = True
+        elif compression == 'zlib-ms-np-pic':
+            np_config.np_compression = pyopenms.MSNumpressCoder.NumpressCompression.PIC
+            zlib_compression = True
+        elif compression == 'zlib-ms-np-slof':
+            np_config.np_compression = pyopenms.MSNumpressCoder.NumpressCompression.SLOF
+            zlib_compression = True
+
+        coder.decodeNP(inData, result, zlib_compression, np_config)
+
         return result
 
     def _decode(self):
@@ -884,6 +896,8 @@ class Spectrum(dict):
                     if compression == 'zlib':
                         decodedData = zlib.decompress(decodedData)
                     elif compression in ['ms-np-linear', 'ms-np-pic', 'ms-np-slof']:
+                        unpackedData = self._decodeNumpress(base64Data, compression)
+                    elif compression in ['zlib-ms-np-linear', 'zlib-ms-np-pic', 'zlib-ms-np-slof']:
                         unpackedData = self._decodeNumpress(base64Data, compression)
                     elif compression == 'no':
                         pass
