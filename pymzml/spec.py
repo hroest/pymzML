@@ -1462,6 +1462,15 @@ class Spectrum(dict):
             accession = element.get('accession')
             self.ms[accession] = element
             if element.tag.endswith('cvParam'):
+
+                # Combination of zlib + msnumpress
+                if accession == "MS:1002746":
+                        self['BinaryArrayOrder'].append(('compression', 'zlib-ms-np-linear'))
+                elif accession == "MS:1002747":
+                        self['BinaryArrayOrder'].append(('compression', 'zlib-ms-np-pic'))
+                elif accession == "MS:1002748":
+                        self['BinaryArrayOrder'].append(('compression', 'zlib-ms-np-slof'))
+
                 if accession in self.param['accessions']:
                     for mzmlTag in self.param['accessions'][accession]['valuesToExtract']:
                         try:
@@ -1506,6 +1515,15 @@ class Spectrum(dict):
 
                     elif self.param['accessions'][accession]['name'] == 'MS-Numpress short logged float compression':
                         self['BinaryArrayOrder'].append(('compression', 'ms-np-slof'))
+
+                    elif self.param['accessions'][accession]['name'] == 'MS-Numpress linear prediction compression followed by zlib compression':
+                        self['BinaryArrayOrder'].append(('compression', 'zlib-ms-np-linear'))
+
+                    elif self.param['accessions'][accession]['name'] == 'MS-Numpress positive integer compression followed by zlib compression':
+                        self['BinaryArrayOrder'].append(('compression', 'zlib-ms-np-pic'))
+
+                    elif self.param['accessions'][accession]['name'] == 'MS-Numpress short logged float compression followed by zlib compression':
+                        self['BinaryArrayOrder'].append(('compression', 'zlib-ms-np-slof'))
 
             elif element.tag.endswith('precursorList'):
                 # TODO remove this completely?
