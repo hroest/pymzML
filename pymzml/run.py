@@ -575,6 +575,13 @@ class Reader(object):
             if len(self.info['offsets']) == 0:
                 raise IOError("File does support random access: index list missing...")
 
+            # Check for conversion of str/int issues
+            if not value in self.info['offsets']:
+                try:
+                    value = int(value)
+                except Exception:
+                    pass
+
             if value in self.info['offsets']:
                 startPos = self.info['offsets'][value]
                 endPos_index = bisect.bisect_right(
