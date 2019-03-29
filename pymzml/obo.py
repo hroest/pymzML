@@ -66,7 +66,7 @@ file.
 from __future__ import print_function
 import sys
 import os
-
+import codecs
 
 class oboTranslator(object):
     def __init__(self, version=None):
@@ -138,7 +138,8 @@ class oboTranslator(object):
 
         # Modify the root for cx_freeze
         if getattr(sys, 'frozen', False):
-            obo_root = os.path.dirname(sys.executable)
+            # obo_root = os.path.dirname(sys._MEIPASS)
+            obo_root = os.path.dirname(__file__)
         else:
             obo_root = os.path.dirname(__file__)
 
@@ -149,7 +150,7 @@ class oboTranslator(object):
         )
 
         if os.path.exists(obo_file):
-            with open(obo_file) as obo:
+            with codecs.open( obo_file, 'r', encoding = 'utf-8' ) as obo:
                 collections = {}
                 collect = False
                 for line in obo:
